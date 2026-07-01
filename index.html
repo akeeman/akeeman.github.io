@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nullify — The Philosophy of the Empty Function</title>
+<style>
+  :root{
+    --ink:#1b1f24;
+    --paper:#ffffff;
+    --wash:#f6f7f8;
+    --line:#e3e6e9;
+    --accent:#5a3ec8;
+    --dim:#6a7078;
+    --code:#eef0f3;
+    --good:#1f9d63;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:15px;
+  }
+  code,pre{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .wrap{display:flex;min-height:100dvh;max-width:1180px;margin:0 auto}
+  aside{
+    width:230px;flex:0 0 230px;border-right:1px solid var(--line);
+    padding:24px 18px;position:sticky;top:0;height:100dvh;overflow:auto;
+  }
+  .brand{font-weight:700;font-size:17px;letter-spacing:-.01em;margin-bottom:2px}
+  .brand span{color:var(--accent)}
+  .ver{font-size:11px;color:var(--dim);margin-bottom:22px}
+  nav a{display:block;color:var(--dim);text-decoration:none;padding:6px 10px;border-radius:6px;font-size:13.5px}
+  nav a:hover{background:var(--wash);color:var(--ink)}
+  nav a.on{background:var(--wash);color:var(--accent);font-weight:600}
+  nav .grp{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin:18px 0 6px 10px}
+  main{flex:1;min-width:0;padding:40px 48px 80px;max-width:780px}
+  .crumb{font-size:12px;color:var(--dim);margin-bottom:14px}
+  h1{font-size:34px;letter-spacing:-.02em;margin-bottom:10px;line-height:1.1}
+  .lede{font-size:17px;color:var(--dim);margin-bottom:30px}
+  h2{font-size:22px;margin:40px 0 12px;letter-spacing:-.01em}
+  p{margin-bottom:14px}
+  blockquote{
+    border-left:3px solid var(--accent);margin:20px 0;padding:4px 0 4px 18px;
+    color:var(--dim);font-style:italic;font-size:16px;
+  }
+  .tip{
+    border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--wash);
+    padding:12px 16px;border-radius:6px;font-size:14px;margin:18px 0;
+  }
+  .tip b{color:var(--accent)}
+  pre{
+    background:#1b1f24;color:#e6e6e6;padding:14px 18px;border-radius:8px;
+    overflow:auto;font-size:13px;margin:0;line-height:1.5;
+  }
+  pre .c{color:#7f8896}
+  pre .k{color:#c191ff}
+  pre .t{color:#7fd0ff}
+  pre .f{color:#e6c07b}
+  .snip{margin:14px 0}
+  .snip .lang{
+    font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);
+    margin-bottom:5px;font-weight:600;
+  }
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  .grid .snip{margin:0}
+  .claims{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+  .claim{border:1px solid var(--line);border-radius:10px;padding:16px}
+  .claim h3{font-size:15px;margin-bottom:4px}
+  .claim h3 .check{color:var(--good);margin-right:6px}
+  .claim p{font-size:13.5px;color:var(--dim);margin:0}
+  .bench{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px}
+  .bench th,.bench td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  .bench th{background:var(--wash);font-weight:600}
+  .bench td:last-child{color:var(--good);font-weight:600}
+  .foot{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+  @media(max-width:720px){
+    aside{display:none}main{padding:28px 22px 60px}
+    .grid,.claims{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <div class="brand">Null<span>ify</span></div>
+    <div class="ver">a philosophy · eternal</div>
+    <nav>
+      <div class="grp">The doctrine</div>
+      <a class="on" href="#">Introduction</a>
+      <a href="#the-form">The canonical form</a>
+      <a href="#virtues">Virtues</a>
+      <div class="grp">Meditations</div>
+      <a href="#">On restraint</a>
+      <a href="#">On the empty return</a>
+      <a href="#">Against features</a>
+      <div class="grp">Appendix</div>
+      <a href="#">Benchmarks</a>
+      <a href="#">Adopters</a>
+      <a href="#">Further silence</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="crumb">Doctrine / Introduction</div>
+    <h1>Nullify</h1>
+    <p class="lede">Nullify is not a library. It is a philosophy: that the most correct function ever written is the one that declares itself and then, with great discipline, does nothing.</p>
+
+    <p>Every bug ever shipped lived inside code that ran. Nullify observes the obvious corollary and writes code that doesn't. What is not written cannot fail. What does not run cannot be slow. The empty function never fails at its task. It can, admittedly, disappoint those who expected it to have one, but Nullify holds that the fault lies with the expectation, not the function.</p>
+
+    <p>Purists will note that the module body also runs, and they are correct. Nullify extends to meet them: the enlightened module declares its empty functions and then, itself, does nothing further. Even a top-level statement is a temptation. Resist it.</p>
+
+    <blockquote>"Perfection is achieved not when there is nothing left to add, but when there is nothing left to execute."</blockquote>
+
+    <div class="tip"><b>Note:</b> Nullify has no installation step, no dependencies, and no repository. You already have everything you need. You have had it the whole time.</div>
+
+    <h2 id="the-form">The canonical form</h2>
+    <p>The doctrine is portable. Below is the empty function, faithfully expressed in ten languages. Note how each community, in its own dialect, arrives at the same enlightened silence.</p>
+
+    <div class="grid">
+      <div class="snip">
+        <div class="lang">Python</div>
+        <pre><span class="k">def</span> <span class="f">nullify</span>():
+    <span class="k">pass</span></pre>
+      </div>
+      <div class="snip">
+        <div class="lang">JavaScript</div>
+        <pre><span class="k">function</span> <span class="f">nullify</span>() {}</pre>
+      </div>
+      <div class="snip">
+        <div class="lang">Rust</div>
+        <pre><span class="k">fn</span> <span class="f">nullify</span>() {}</pre>
+      </div>
+      <div class="snip">
+        <div class="lang">Go</div>
+        <pre><span class="k">func</span> <span class="f">nullify</span>() {}</pre>
+      </div>
+      <div class="snip">
+        <div class="lang">C</div>
+        <pre><span class="t">void</span> <span class="f">nullify</span>(<span class="t">void</span>) {}</pre>
+      </div>
+      <div class="snip">
+        <div class="lang">Java</div>
+        <pre><span class="k">void</span> <span class="f">nullify</span>() {}</pre>
+      </div>
+      <div class="snip">
+        <div class="lang">Ruby</div>
+        <pre><span class="k">def</span> <span class="f">nullify</span>
+<span class="k">end</span></pre>
+      </div>
+      <div class="snip">
+        <div class="lang">Haskell</div>
+        <pre><span class="f">nullify</span> :: <span class="t">IO</span> ()
+<span class="f">nullify</span> = <span class="k">return</span> ()</pre>
+      </div>
+      <div class="snip">
+        <div class="lang">Swift</div>
+        <pre><span class="k">func</span> <span class="f">nullify</span>() {}</pre>
+      </div>
+      <div class="snip">
+        <div class="lang">Lisp</div>
+        <pre>(<span class="k">defun</span> <span class="f">nullify</span> () <span class="k">nil</span>)</pre>
+      </div>
+    </div>
+
+    <div class="tip"><b>Observe:</b> the implementations differ only in ceremony. The behaviour is identical, verified across all ten by extensive not-testing.</div>
+
+    <h2 id="virtues">Virtues</h2>
+    <p>A philosophy must earn its adoption. Nullify does so on every axis that matters, and declines to compete on the ones that don't.</p>
+
+    <div class="claims">
+      <div class="claim">
+        <h3><span class="check">✓</span>Easy</h3>
+        <p>The entire API surface is the empty pair of braces. There is nothing to learn, misremember, or read the changelog for. Onboarding time: zero.</p>
+      </div>
+      <div class="claim">
+        <h3><span class="check">✓</span>Safe</h3>
+        <p>No memory is allocated, no input is trusted, no state is mutated. The attack surface is a smooth, featureless void. Provably free of every CVE ever filed.</p>
+      </div>
+      <div class="claim">
+        <h3><span class="check">✓</span>Fast</h3>
+        <p>An empty body compiles away entirely. Nullify runs in constant time, that constant being zero. It is the only workload the optimiser truly respects.</p>
+      </div>
+      <div class="claim">
+        <h3><span class="check">✓</span>Portable</h3>
+        <p>Runs identically on every architecture, past and future. Forward-compatible with hardware not yet invented. Never needs a polyfill.</p>
+      </div>
+      <div class="claim">
+        <h3><span class="check">✓</span>Testable</h3>
+        <p>100% branch coverage is reached with a single empty test asserting nothing. The CI pipeline is always green, because it has nothing to catch.</p>
+      </div>
+      <div class="claim">
+        <h3><span class="check">✓</span>Sustainable</h3>
+        <p>Zero CPU cycles means zero watts. Nullify is the only carbon-negative function, if you count the flights you didn't take to the incident review.</p>
+      </div>
+    </div>
+
+    <h2>Benchmarks</h2>
+    <p>Measured against leading alternatives that insist on doing something:</p>
+    <table class="bench">
+      <tr><th>Metric</th><th>Typical function</th><th>Nullify</th></tr>
+      <tr><td>Latency (p99)</td><td>14.2 ms</td><td>0 ms</td></tr>
+      <tr><td>Memory</td><td>38 MB</td><td>0 B</td></tr>
+      <tr><td>Open bugs</td><td>7</td><td>0</td></tr>
+      <tr><td>Lines to review</td><td>1,204</td><td>0</td></tr>
+      <tr><td>Regret</td><td>considerable</td><td>none</td></tr>
+    </table>
+
+    <h2>FAQ</h2>
+    <p><b>Does adopting Nullify require rewriting my code?</b><br>Ideally, deleting it.</p>
+    <p><b>What does this domain actually host?</b><br>A philosophy. Philosophies are famously light on infrastructure, which is why the page is so short.</p>
+
+    <div class="foot">
+      © whenever · Nullify · No rights reserved, because nothing was created.
+    </div>
+  </main>
+</div>
+</body>
+</html>
